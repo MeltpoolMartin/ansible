@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: 'Install required system packages'
+      apt:
+        name:
+          - 'apt-transport-https'
+          - 'ca-certificates'
+          - 'curl'
+          - 'software-properties-common'
+        state: 'latest'
+        update_cache: yes
+
+    - name: 'Add Docker GPD apt Key'
+      apt_key:
+        url: 'https://download.docker.com/linux/ubuntu/gpg'
+        state: 'present'
+
+    - name: 'Add Docker Repository'
+      apt_repository:
+        repo: 'deb https://download.docker.com/linux/ubuntu focal stable'
+        state: 'present'
+
+    - name: 'Update apt and install docker-ce'
+      apt:
+        name: 'docker-ce'
+        state: 'latest'
+        update_cache: yes
+
+    - name: 'Enable docker systemd service'
+      service:
+        name: 'docker'
+        state: 'started'
+        enabled: yes
+
+    - name: 'Create "docker" group'
+      group:
+        name: 'docker'
+        state: 'present'
+
+    - name: 'Add users to docker group'
+      user:
+        name: '{{ item }}'
+        groups: 'docker'
+        append: yes
+      with_items: 'martin'
