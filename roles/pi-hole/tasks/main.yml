@@ -1,0 +1,26 @@
+---
+- hosts: homelab
+  become: true
+
+  # roles:
+  #   - common
+  #   - docker
+  #   - pi-hole
+
+- name: Configure macvlan network
+  hosts:  homelab1 # all
+  gather_facts: no
+  tasks:
+    - import_tasks: ./../subtasks/macvlan_config.yml
+
+- name: Start macvlan network
+  hosts: homelab1
+  gather_facts: no
+  tasks:
+    - import_tasks: ./../subtasks/macvlan_start.yml
+
+- name: Deploy Pihole
+  hosts: swarmmanagers
+  become: True
+  tasks:
+    - import_tasks: ./../subtasks/pihole_service.yml

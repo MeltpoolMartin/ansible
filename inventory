@@ -1,6 +1,16 @@
-192.168.1.30
-192.168.1.40
+ [homelab]
+ homelab1 ansible_host=192.168.1.40 pihole_ip=192.168.1.20
+ homelab2 ansible_host=192.168.1.30 pihole_ip=192.168.1.20
 
-[all:vars]
-ansible_connection=ssh
-ansible_user=martin
+ [homelab:vars]
+ ansible_connection=ssh
+ ansible_user=martin
+ ansible_python_interpreter=/usr/bin/python3
+
+ [swarmmanagers]
+ homelab1 manager=true
+
+ [swarmworkers]
+ homelab1
+ homelab2
+

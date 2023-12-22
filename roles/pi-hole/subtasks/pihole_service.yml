@@ -1,0 +1,48 @@
+---
+  - name: Deploy pihole
+    docker_swarm_service:
+      name: pihole
+      image: pihole/pihole:latest
+      networks:
+        - mvl_pihole
+      publish:
+        - target_port: 53
+          published_port: 53
+          protocol: tcp
+          mode: host
+        - target_port: 53
+          published_port: 53
+          protocol: udp
+          mode: host
+        - target_port: 80
+          published_port: 80
+          protocol: tcp
+          mode: host
+        - target_port: 443
+          published_port: 443
+          protocol: tcp
+          mode: host
+      env:
+        TZ: 'Europe/Berlin'
+        WEBPASSWORD: ''
+        IPv6: 'false'
+        CONDITIONAL_FORWARDING: 'true'
+        CONDITIONAL_FORWARDING_IP: '192.168.1.10'
+        CONDITIONAL_FORWARDING_DOMAIN: 'RedBaronRouter'
+        DNSMASQ_LISTENING: 'local'
+        DNS1: 1.1.1.1
+        DNS2: 208.67.222.222
+      mounts:
+        - source: /volume1/docker/pihole/etc-pihole
+          target: nfs_volume_etc-pihole:/etc/pihole
+          type: bind
+        - source: /volume1/docker/pihole/etc-dnsmasq
+          target: nfs_volume_etc-dnsmasq:/etc/dnsmasq.d
+          type: bind
+      dns:
+        - 127.0.0.1
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+           - "node.labels.dns==true"
