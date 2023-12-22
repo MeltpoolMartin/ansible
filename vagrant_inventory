@@ -1,0 +1,10 @@
+[all:vars]
+env=vagrant
+
+[vagrant]
+127.0.0.1
+
+[vagrant:vars]
+ ansible_port=2222
+ ansible_user=vagrant
+ ansible_private_key_file=".vagrant/machines/default/virtualbox/private_key"

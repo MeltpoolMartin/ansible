@@ -1,0 +1,7 @@
+---
+- name: Setup home lab
+  hosts: vagrant
+
+  roles:
+    - role: docker
+      tags: ["docker"]
