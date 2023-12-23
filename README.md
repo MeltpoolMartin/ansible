@@ -13,14 +13,12 @@ sudo -E bash -c "apt update && apt install python3-pip -y" ⁄
 
 ## How to test?
 
-Spinning up virtual machine for testing
-
-```bash
-vagrant up
-```
-
-Execute ansible playbook in virtual machine
+Spinning up virtual machine for testing followed by the execution of the ansible playbook inside the  virtual machine
 
 ```bash
 make vagrant
 ```
+
+## Great references
+
+[ansible-pihole](https://github.com/shaderecker/ansible-pihole)

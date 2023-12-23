@@ -5,6 +5,17 @@ env=vagrant
 127.0.0.1
 
 [vagrant:vars]
- ansible_port=2222
- ansible_user=vagrant
- ansible_private_key_file=".vagrant/machines/default/virtualbox/private_key"
+ansible_port=2222
+ansible_user=vagrant
+ansible_private_key_file=".vagrant/machines/default/virtualbox/private_key"
+
+timezone= "Europe/Berlin"
+static_dns= "1.1.1.1"
+pihole_image= "pihole/pihole:2023.11.0"
+pihole_ftl_max_db_days= "180"
+pihole_webpassword= ""
+pihole_dns= "1.1.1.1"
+pihole_rev_server= "true"
+pihole_rev_server_domain= "fritz.box"
+pihole_rev_server_target= "192.168.1.1"
+pihole_rev_server_cidr= "192.168.1.0/24"
