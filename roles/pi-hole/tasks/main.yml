@@ -1,4 +1,4 @@
-- name: Create pi-hole directory
+- name: Create pi-hole directories
   file:
     path: "/home/{{ ansible_user }}/homelab/pihole"
     owner: "{{ ansible_user }}"
@@ -21,19 +21,22 @@
       TZ: "{{ timezone }}"
       WEBPASSWORD: "{{ pihole_webpassword }}"
       PIHOLE_DNS_: "{{ pihole_dns }}"
-      DNSMASQ_LISTENING: "local"
+      DNSMASQ_LISTENING: " {{ pihole_dnsmasq_listening }}"
       REV_SERVER: "{{ pihole_rev_server }}"
-      REV_SERVER_DOMAIN: "{{ pihole_rev_server_domain }}"
+      # REV_SERVER_DOMAIN: "{{ pihole_rev_server_domain }}"
       REV_SERVER_TARGET: "{{ pihole_rev_server_target }}"
       REV_SERVER_CIDR: "{{ pihole_rev_server_cidr }}"
       FTLCONF_MAXDBDAYS: "{{ pihole_ftl_max_db_days }}"
     dns_servers:
       - 127.0.0.1
       - "{{ static_dns }}"
-    network_mode: host
+    ports:
+      - 80:80
+      - 53:53/udp
+      - 53:53/tcp
     volumes:
-      - "/home/{{ ansible_user }}/homelab/pihole/pihole/:/etc/pihole/"
-      - "/home/{{ ansible_user }}/homelab/pihole/dnsmasq.d/:/etc/dnsmasq.d/"
+      - "/home/{{ ansible_user }}/homelab/pihole/etc-pihole/:/etc/pihole/"
+      - "/home/{{ ansible_user }}/homelab/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/"
     log_driver: json-file
     log_options:
       max-size: "10m"
